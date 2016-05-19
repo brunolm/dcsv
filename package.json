@@ -1,0 +1,30 @@
+{
+  "name": "dcsv",
+  "version": "0.0.1",
+  "description": "Do things with csv files.",
+  "main": "built/ahgora-service.js",
+  "bin": "built/index.js",
+  "scripts": {
+    "start": "node built/index.js",
+    "build": "tsc",
+    "build-watch": "tsc -w",
+    "clean": "gulp clean",
+    "test": "echo 'no tests'"
+  },
+  "author": "BrunoLM <brunolm7@gmail.com> (http://codingwise.com/)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brunolm/dcsv"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^2.9.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-shell": "^0.5.2",
+    "rimraf": "^2.5.2",
+    "tslint": "^3.10.1",
+    "typescript": "^1.8.10"
+  }
+}
