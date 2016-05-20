@@ -1,16 +1,21 @@
 import * as csv from '../csv';
-import * as linq from '../linq';
 
 export default async function run([filename, options]) {
-  let maxSize = 0;
+  let maxSizes = [];
   let maxLineNumberSize = 1;
 
   await csv.read(filename, (line, linenumber) => {
     const values = csv.parse(line, options.delimiter);
-    maxSize = linq.max(values, val => val.length);
+    maxSizes = values.map((val, i) => {
+      return (maxSizes[i] || -1) > val.length ? maxSizes[i] : val.length;
+    });
+
     maxLineNumberSize = linenumber;
   });
-  maxLineNumberSize = `${maxLineNumberSize}`.length;
+
+  if (options.lineNumbers) {
+    maxSizes.unshift(`${maxLineNumberSize}`.length);
+  }
 
   await csv.read(filename, (line, lineNumber) => {
     const values = csv.parse(line, options.delimiter);
@@ -18,8 +23,7 @@ export default async function run([filename, options]) {
       values.unshift(`${lineNumber || '-'}`);
     }
     console.log(values.map((val, i) => {
-      let size = options.lineNumbers && !i ? maxLineNumberSize : maxSize;
-      const complement = size - val.length;
+      const complement = maxSizes[i] - val.length;
       return ` ${val}${' '.repeat(complement)} `;
     }).join('|'));
   });
